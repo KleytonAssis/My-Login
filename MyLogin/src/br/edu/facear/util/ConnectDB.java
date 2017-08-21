@@ -15,8 +15,11 @@ public class ConnectDB {
 	private String password;
 	
 	public ConnectDB() {
-		driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		url = "jdbc:sqlserver://localhost:1434/databaseName = MyLogin";
+	driver =	"com.mysql.jdbc.Driver";
+		url = "jdbc:mysql://localhost:3306/MyLogin";
+		
+	//	driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		// url = "jdbc:sqlserver://localhost:1434;databaseName=MyLogin";
 		username = "sa";
 		password = "admin27";
 	}
