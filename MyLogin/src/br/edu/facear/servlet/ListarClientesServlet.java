@@ -1,6 +1,8 @@
 package br.edu.facear.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,22 +11,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sun.prism.Texture.Usage;
-
 import br.edu.facear.model.Cliente;
-import br.edu.facear.service.AutenticarUsuarioService;
+import br.edu.facear.service.ClienteService;
 
 /**
- * Servlet implementation class AutenticarUsuarioServlet
+ * Servlet implementation class ListarClientesServlet
  */
-@WebServlet("/AutenticarUsuarioServlet")
-public class AutenticarUsuarioServlet extends HttpServlet {
+@WebServlet("/ListarClientesServlet")
+public class ListarClientesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public AutenticarUsuarioServlet() {
+    public ListarClientesServlet() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -32,8 +33,24 @@ public class AutenticarUsuarioServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("Acesso não permitido!!!");
+	
+		ClienteService service = new ClienteService();
+		try {
+			ArrayList<Cliente> lista = (ArrayList<Cliente>) service.listar() ;
+		
+			request.setAttribute("listaClientes", lista);
+			
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/listarClientes.jsp");
+		rd.forward(request, response);
+		
+		
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -41,24 +58,7 @@ public class AutenticarUsuarioServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String email = request.getParameter("email");
-		String senha = request.getParameter("senha");
-		
-		AutenticarUsuarioService service = new AutenticarUsuarioService();
-		//Obter do Banco de Dados
-		Cliente c = service.autenticar(email, senha);
-		
-		//Colocar na área de memória da sessão
-		request.setAttribute("cliente", c);
-		
-		String nextPage = "/index.html";
-		
-		if(c != null)
-			nextPage = "/principal.jsp";
-		
-		RequestDispatcher rd = getServletContext().
-								getRequestDispatcher(nextPage);
-		rd.forward(request, response);
+		doGet(request, response);
 	}
 
 }
