@@ -15,7 +15,7 @@ public class ClienteDAO extends GenericDAO{
 							 + "FROM CLIENTE "
 			                 + "WHERE EMAIL = ? AND SENHA = ?;";
 	
-	private String LISTAR_SQL = "SELECT * FROM CLIENTE;";
+	private String LISTAR_SQL = "SELECT * FROM CLIENTE";
 	
 	public Cliente autenticar(String email, String senha) throws ClassNotFoundException, IOException, SQLException{
 		Cliente c = null;
@@ -44,7 +44,10 @@ public class ClienteDAO extends GenericDAO{
 		
 		return c;
 	}
-	public void inserir(Cliente c) {
+	
+	
+	
+	public void Cadastrar(Cliente c) {
 		
 	}
 	public void alterar(Cliente c) {
@@ -76,5 +79,29 @@ public class ClienteDAO extends GenericDAO{
 		
 		
 		return lista;
+	}
+	
+	public Cliente obterClientePorId(Integer id) throws ClassNotFoundException, IOException, SQLException {
+		Cliente c = null;
+		openConnection();
+		 String LISTAR_SQL_ID = "Select * from cliente where id ='"+id+"'";
+					
+		ps = connect.prepareStatement(LISTAR_SQL_ID);
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs != null) {
+				 c = new Cliente(rs.getInt("id"),
+						rs.getString("nome"),
+						rs.getString("cpf"),
+						rs.getString("email"),
+						rs.getString("senha"));
+			}
+		
+		
+		closeConnection();
+		
+	
+		
+		return c;
 	}
 }

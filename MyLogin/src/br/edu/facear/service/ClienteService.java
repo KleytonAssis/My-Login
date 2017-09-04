@@ -19,4 +19,12 @@ public class ClienteService {
 	public List<Cliente> listar() throws ClassNotFoundException, IOException, SQLException{
 		return dao.listar();
 	}
+	public void Cadastrar(Cliente c) {
+		dao.Cadastrar(c);
+	}
+	
+	public Cliente obterClientePorId(Integer id) throws ClassNotFoundException, IOException, SQLException {
+		return dao.obterClientePorId(id);
+		
+		 }
 }
